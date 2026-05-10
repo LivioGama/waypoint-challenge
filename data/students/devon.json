@@ -1,0 +1,153 @@
+{
+  "id": "devon",
+  "student": {
+    "name": "Devon James Carter",
+    "id": "61492DC",
+    "dob": "2013-07-19",
+    "age": 12,
+    "grade": "7",
+    "primary_language": "English",
+    "school": "Riverstone Prep Public Middle School"
+  },
+  "disability": {
+    "category": "Emotional Disturbance",
+    "english_learner": false,
+    "requires_at": false,
+    "summary": "ED with primary anxiety presentation (generalized + performance/test anxiety). Academic skills are at grade level when Devon is regulated. Anxiety triggers — timed assessments, cold-calling, oral presentations, unannounced changes — produce somatic symptoms (stomachache, freeze, tearfulness) and lead to escape behaviors. A current Functional Behavior Assessment (FBA) and Behavior Intervention Plan (BIP) are in place; alternate test setting is required."
+  },
+  "student_vision": {
+    "this_year": {
+      "ela": "Write a real essay without throwing it away first.",
+      "math": "Finish my work on the days I'm doing okay.",
+      "social": "Stop crying in front of the class.",
+      "tests": "Take tests in Ms. R's room, not the big classroom."
+    },
+    "long_term": [
+      "Get to high school without missing a whole quarter.",
+      "Tell an adult I'm panicking before I run out of the room."
+    ]
+  },
+  "present_levels": {
+    "academics_general": {
+      "current_performance": "On grade level across content areas when work is completed. iReady math: G7 (Fall 2025). iReady reading: G7. Work-completion rate is the bottleneck — 45% of in-class assignments turned in over the last marking period; 90% of attempted work is at grade-level proficiency. Strong written work when given choice of topic and quiet setting.",
+      "strengths": "Thoughtful, articulate in writing, kind to younger students, strong reader, deep interest in history (WWII, civil rights movement) and graphic novels.",
+      "impact": "Anxiety drives avoidance: incomplete classwork, refusal to attempt timed tasks, escape from room when called on. Without alternate setting, co-regulation script, and FBA-aligned breaks, Devon's measured performance dramatically underestimates his ability."
+    },
+    "ela": {
+      "current_performance": "Reading on grade level. Written expression on grade level when not under time/performance pressure — produces multi-paragraph essays with clear thesis and evidence when working alone in resource room. In whole-group setting, often submits blank paper or single sentence. Strongly prefers writing over speaking.",
+      "strengths": "Clear voice, strong organization, willingness to revise when feedback is delivered privately in writing.",
+      "current_grade": "2.4 (standards-based; 3 = full mastery)",
+      "homework_independent_accuracy": "70–85% when completed at home; ~30% completion rate for in-class writing",
+      "with_alternate_setting_accuracy": "85–95% on the same prompts completed in resource room"
+    },
+    "math": {
+      "current_performance": "On grade level conceptually. Work-completion stamina is the goal area: starts assignments but stops at first error or unfamiliar problem type, often crumples paper or asks to leave.",
+      "current_average": "62% (driven by incomplete work; attempted-work accuracy is 88%)",
+      "target": "80% overall via improved completion stamina"
+    },
+    "behavioral_social_emotional": {
+      "current_performance": "Diagnosed with generalized anxiety and specific performance/test anxiety. FBA (Sept 2025) identified triggers: timed tasks, cold-calling, oral presentation, unexpected schedule changes, conflict with peers. Function of escape behavior: avoidance of perceived performance failure. BIP includes: co-regulation script with case manager, warning-signs sheet (laminated, kept in folder), 5-minute breaks on request without explanation required, 'silent signal' (red card on desk) to leave the room without verbal exchange. Sees outside therapist weekly; school counselor 2x/week.",
+      "strengths": "Self-aware, articulate about his anxiety in 1:1 settings, engages well with trusted adults, recovers quickly when given space.",
+      "impact": "Untreated anxiety episodes can cost 30–90 minutes of instructional time and produce lasting reluctance to re-enter the triggering setting. With BIP in place, average recovery time is 8 minutes.",
+      "bullying_vulnerability": "Elevated due to visible distress responses; self-advocacy and confidentiality of break system are protective."
+    }
+  },
+  "accommodations": {
+    "presentation_of_instruction": [
+      "No cold-calling — Devon raises hand or signals to participate",
+      "Directions given in writing whenever oral directions are given",
+      "Advance written notice of any oral presentation (minimum 5 school days) with option to record video alternative",
+      "Co-regulation script reviewed with case manager at start of each day"
+    ],
+    "response": [
+      "Written response accepted in place of any oral response",
+      "Typed response accepted for any handwritten task",
+      "Option to submit work via shared doc rather than hand in physically",
+      "Errors not marked in red ink"
+    ],
+    "timing_scheduling": [
+      "5-minute breaks on request, no explanation required, up to 4 per day",
+      "Extra time (2x) on all assessments",
+      "Assignment chunking: long tasks broken into segments with check-in after each segment",
+      "No same-day assessments after a documented anxiety episode"
+    ],
+    "setting_environment": [
+      "Alternate setting (resource room with case manager) REQUIRED for all formal assessments",
+      "Seat near door for low-profile exit",
+      "Red-card 'silent signal' on desk; teacher acknowledges with nod, no verbal exchange",
+      "Warning-signs sheet (laminated) accessible in folder at all times"
+    ]
+  },
+  "modifications": {
+    "instruction": "BIP-aligned: never require oral performance in front of whole class without 5-day notice and recorded-video alternative. Assessments administered in alternate setting only. Work-completion measured against attempted-work accuracy, not raw completion rate, until stamina goal is met."
+  },
+  "annual_goals": [
+    {
+      "id": 1,
+      "area": "Anxiety self-management",
+      "baseline": "Recognizes panic onset after the fact in 2/5 opportunities; uses a coping strategy (box breathing, grounding 5-4-3-2-1, red-card break) before escalation in 1/5 opportunities. Average recovery time post-episode: 8 min with BIP, 35+ min without.",
+      "goal": "Independently identify an early warning sign from the personal warning-signs sheet and deploy a taught coping strategy (box breathing, 5-4-3-2-1 grounding, red-card break, request co-regulation) BEFORE escalation in 4 of 5 opportunities, with average post-episode recovery under 10 minutes.",
+      "criteria": "80% across 4 consecutive data weeks",
+      "method": "BIP data sheet, teacher observation, counselor log, self-report check-in",
+      "schedule": "End of each quarter",
+      "owner": "School Counselor / Case Manager",
+      "benchmarks": [
+        "Read warning-signs sheet aloud with case manager at morning check-in 4/5 days.",
+        "Use red-card silent signal independently when warning signs appear, 4/5 opps.",
+        "Complete a 60-second box-breathing cycle before re-entering classroom, 4/5 opps.",
+        "Self-rate anxiety 1–10 at end of day on tracking log, 4/5 days.",
+        "Re-enter triggering setting within 10 minutes of leaving, 4/5 opps."
+      ]
+    },
+    {
+      "id": 2,
+      "area": "Written expression — at grade level",
+      "baseline": "Produces grade-level multi-paragraph essays in alternate setting (85–95% rubric score). In whole-group setting, completes ~30% of writing tasks; submitted work averages 1.8 on standards-based scale.",
+      "goal": "Independently complete and submit grade-level written responses (multi-paragraph essay, short constructed response, journal entry) at a 2.5+ rubric score in 4 of 5 assignments per quarter, with at least 3 of those completed in the general education setting (rather than alternate setting).",
+      "criteria": "80% of assignments at 2.5+ rubric, with progressive shift to gen ed setting",
+      "method": "Work samples scored against grade-level rubric, completion log",
+      "schedule": "End of each quarter",
+      "owner": "SE Classroom Teacher",
+      "benchmarks": [
+        "Use a written planning template (claim → 3 evidence → conclusion) before drafting, 4/5 assignments.",
+        "Complete first paragraph in gen ed setting before optional move to alternate setting, 3/5 assignments.",
+        "Submit final draft (typed) within agreed extended deadline, 4/5 assignments.",
+        "Respond in writing to teacher feedback within 48 hours, 4/5 instances."
+      ]
+    },
+    {
+      "id": 3,
+      "area": "Mathematics — Work-completion stamina",
+      "baseline": "Attempts ~45% of in-class math assignments. Of attempted work, 88% accuracy. Stops at first error or unfamiliar problem; often escapes the room.",
+      "goal": "Increase in-class math work completion from 45% to 80% over the IEP year, while maintaining attempted-work accuracy at 80%+ — using assignment chunking, the red-card break, and the 'skip-and-return' protocol.",
+      "criteria": "80% completion across 4 consecutive weeks, 80% accuracy maintained",
+      "method": "Assignment completion log, curriculum-based assessment",
+      "schedule": "End of each quarter",
+      "owner": "SE Classroom Teacher / Gen Ed Math Teacher",
+      "benchmarks": [
+        "Complete one assignment chunk before requesting a break, 4/5 opportunities.",
+        "Use 'skip-and-return' protocol on unfamiliar problems instead of stopping, 4/5 opportunities.",
+        "Submit work even when incomplete, marking unfinished items with a star rather than discarding, 4/5 assignments.",
+        "Request teacher check-in (in writing) after each assignment chunk, 4/5 chunks."
+      ]
+    }
+  ],
+  "service_delivery": [
+    {"goal": [1], "type": "Counseling (Direct)", "provider": "School Counselor", "location": "Counselor's Office", "frequency": "2x/week 30 min"},
+    {"goal": [1], "type": "BIP Implementation (Consultation)", "provider": "Case Manager", "location": "Gen Ed Classroom", "frequency": "Daily 10 min check-in"},
+    {"goal": [2], "type": "ELA Support (Direct)", "provider": "Special Education Teacher", "location": "Gen Ed Classroom", "frequency": "Daily 45 min"},
+    {"goal": [3], "type": "Math Support (Direct)", "provider": "Special Education Teacher", "location": "Gen Ed Classroom", "frequency": "Daily 45 min"},
+    {"goal": [1, 2, 3], "type": "Case Management (Consultation)", "provider": "Case Manager", "location": "Resource Room", "frequency": "Weekly 30 min"}
+  ],
+  "placement": "Full Inclusion Program with alternate setting for assessments (services outside gen ed < 21% of time; assessment time accounts for the majority of pull-out)",
+  "assessment_accommodations": {
+    "mcas": [
+      "Separate or alternate test location — REQUIRED, not optional (DF4)",
+      "Small group test administration (DF1)",
+      "Frequent supervised breaks on request (DF3)",
+      "Extended time 2x (T1)",
+      "Test administration over multiple days for long sessions (T2)",
+      "Familiar test administrator — case manager (DF6)"
+    ]
+  }
+}

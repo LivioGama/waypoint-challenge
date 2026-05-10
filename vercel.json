@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "installCommand": "bun install",
+  "rewrites": [
+    { "source": "/api/generate/stream", "destination": "/api/generate" }
+  ]
+}

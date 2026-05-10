@@ -1,0 +1,135 @@
+{
+  "id": "marcus",
+  "student": {
+    "name": "Marcus Reyes",
+    "id": "44210MR",
+    "dob": "2013-04-08",
+    "age": 12,
+    "grade": "7",
+    "primary_language": "English",
+    "school": "Riverstone Prep Public Middle School"
+  },
+  "disability": {
+    "category": "Specific Learning Disability (Dyslexia)",
+    "english_learner": false,
+    "requires_at": true,
+    "summary": "Decoding and reading fluency are significantly below grade level. Listening comprehension is at or above grade level. With text-to-speech, Marcus performs grade-appropriate analytical work; without it, his comprehension collapses around dense or multi-clause sentences."
+  },
+  "student_vision": {
+    "this_year": {
+      "ela": "I want to read longer texts without my eyes getting tired.",
+      "math": "I want to do word problems faster.",
+      "science": "I want to write up my own lab reports."
+    },
+    "long_term": [
+      "Pass MCAS ELA with accommodations.",
+      "Get into the school robotics elective."
+    ]
+  },
+  "present_levels": {
+    "academics_general": {
+      "current_performance": "Strong oral participation; struggles with dense print. Listening comprehension at G7. Reading rate ~75 wpm (G7 target ~150). Spelling errors are phonetic and frequent.",
+      "strengths": "Quick verbal reasoner. Asks sharp clarifying questions. Strong with diagrams and physical models.",
+      "impact": "Reading fluency bottleneck slows him on every print-heavy task. Without accommodations he runs out of time before he can demonstrate what he knows."
+    },
+    "ela": {
+      "current_performance": "Decoding accuracy ~88% on G7 text. Comprehension drops sharply on multi-clause sentences. With text-to-speech, comprehension ~grade level on the same text. Writing: ideas are strong; spelling and mechanics are well below grade level.",
+      "strengths": "When text is read aloud or via TTS, he engages thoughtfully and contributes original analysis.",
+      "current_grade": "2.1 (standards-based; 3 = full mastery)",
+      "homework_independent_accuracy": "30%–60% on print-only tasks; 70%–85% with TTS",
+      "with_accommodations_accuracy": "~80% with TTS + speech-to-text writing"
+    },
+    "math": {
+      "current_performance": "On-grade conceptually. Word problems gated by reading speed — give him the same problem read aloud and accuracy jumps from ~55% to ~85%.",
+      "current_average": "70%",
+      "target": "85% with read-aloud accommodation"
+    },
+    "behavioral_social_emotional": {
+      "current_performance": "Generally engaged and well-liked. Becomes self-deprecating about reading in front of peers; will refuse to read aloud. Responds well to choice (which scaffold to use) and to being treated as a capable thinker.",
+      "strengths": "Humor, perseverance, strong peer relationships.",
+      "impact": "Avoidance of any task that requires reading aloud unprompted. Loses confidence quickly when called on cold."
+    }
+  },
+  "accommodations": {
+    "presentation_of_instruction": [
+      "Text-to-speech for any text > 1 paragraph",
+      "Audio version of grade-level texts",
+      "Vocabulary previewed orally before reading"
+    ],
+    "response": [
+      "Speech-to-text for written responses > 2 sentences",
+      "Oral responses accepted in place of writing for comprehension checks",
+      "Spelling errors not penalized"
+    ],
+    "timing_scheduling": [
+      "Extra time (1.5x) on reading-heavy assessments",
+      "Frequent breaks on long reading blocks"
+    ],
+    "setting_environment": [
+      "Headphones permitted for TTS without singling out",
+      "Seated near a charging outlet for assistive device"
+    ]
+  },
+  "modifications": {
+    "instruction": "Provide all texts in TTS-compatible format. Pre-teach key vocabulary. Never require unprompted oral reading."
+  },
+  "annual_goals": [
+    {
+      "id": 1,
+      "area": "Reading fluency",
+      "baseline": "Reading rate ~75 wpm on G7 text; decoding accuracy ~88%.",
+      "goal": "Increase reading rate to 110 wpm on G7 text with 95% decoding accuracy.",
+      "criteria": "3 of 4 consecutive timed cold reads",
+      "method": "DIBELS / curriculum-based reading probes",
+      "schedule": "End of each quarter",
+      "owner": "Reading Specialist",
+      "benchmarks": [
+        "Decode multi-syllable words using taught morphology rules.",
+        "Track text without finger or marker for 1 minute.",
+        "Re-read for fluency after first cold read."
+      ]
+    },
+    {
+      "id": 2,
+      "area": "Written expression with assistive tech",
+      "baseline": "With speech-to-text, produces on-grade ideas; mechanics still below grade level.",
+      "goal": "Produce a 5-sentence on-grade analytical paragraph using speech-to-text + spell check, with 4 of 5 sentences free of meaning-altering errors.",
+      "method": "Work samples scored against grade-level rubric",
+      "schedule": "End of quarter",
+      "owner": "SE Classroom Teacher",
+      "benchmarks": [
+        "Dictate a complete claim sentence answering the prompt.",
+        "Dictate two pieces of supporting evidence with paragraph references.",
+        "Edit dictated text for missing punctuation and homophone errors."
+      ]
+    },
+    {
+      "id": 3,
+      "area": "Self-advocacy",
+      "baseline": "Will use TTS when set up by an adult; rarely requests it himself.",
+      "goal": "Independently request and set up his accommodations (TTS, headphones, extra time) in 4 of 5 opportunities.",
+      "method": "Teacher observation",
+      "schedule": "Monthly",
+      "owner": "Case Manager",
+      "benchmarks": [
+        "Name his accommodations when asked.",
+        "Set up TTS on a new device unprompted.",
+        "Politely decline unprompted oral reading without disengaging."
+      ]
+    }
+  ],
+  "service_delivery": [
+    {"goal": [1], "type": "Reading Intervention (Direct)", "provider": "Reading Specialist", "location": "Pull-out", "frequency": "3x/week 30 min"},
+    {"goal": [1, 2], "type": "ELA support (Direct)", "provider": "Special Education Teacher", "location": "Gen Ed Classroom", "frequency": "Daily 45 min"},
+    {"goal": [3], "type": "Self-advocacy coaching (Consultation)", "provider": "Case Manager", "location": "Gen Ed Classroom", "frequency": "Weekly 15 min"}
+  ],
+  "placement": "Full Inclusion Program (services outside gen ed < 21% of time)",
+  "assessment_accommodations": {
+    "mcas": [
+      "Text-to-speech for ELA reading passages and questions",
+      "Speech-to-text for open-response items",
+      "Extended time (1.5x)",
+      "Separate setting"
+    ]
+  }
+}

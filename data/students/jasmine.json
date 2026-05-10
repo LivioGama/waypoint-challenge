@@ -1,0 +1,142 @@
+{
+  "id": "jasmine",
+  "student": {
+    "name": "Jasmine Regina Bailey",
+    "id": "35110GST",
+    "dob": "2013-09-22",
+    "age": 12,
+    "grade": "7",
+    "primary_language": "English",
+    "school": "Riverstone Prep Public Middle School"
+  },
+  "disability": {
+    "category": "Health Impairment",
+    "english_learner": false,
+    "requires_at": false,
+    "summary": "Disability affects attention, task initiation, focus, stamina, and study skills. Leads to avoidance behaviors, withdrawal, and difficulty with adaptability. Impacts all content areas without appropriate supports."
+  },
+  "student_vision": {
+    "this_year": {
+      "math": "Get faster at multi-step problems.",
+      "ela": "Read books that aren't too easy and understand them.",
+      "science": "Do more lab experiments and write about what I see.",
+      "history": "Take better notes."
+    },
+    "long_term": [
+      "Get 3's in all classes.",
+      "Ask for help when stuck instead of giving up."
+    ]
+  },
+  "present_levels": {
+    "academics_general": {
+      "current_performance": "Attends regularly, ready to learn. When calm and focused, contributes thoughtful comments. Improved with multi-digit operations and integer rules. iReady math: grade 4 level (Fall 2025).",
+      "strengths": "Likes participating, open to feedback during 1-on-1 check-ins, warm, gets along with peers.",
+      "impact": "Disability affects attention, task initiation, focus, stamina, study skills — leads to avoidance and withdrawal across all content areas."
+    },
+    "ela": {
+      "current_performance": "iReady Fall 2025: overall grade 3 reading level. Vocabulary: G3, Literature Comprehension: G3, Informational Text Comprehension: G2. Decodes most grade-level words, adequate fluency. Struggles with literal/inferential questions verbally and in writing. Low reading/writing stamina. Needs frequent reminders to track text, annotate, reread when independent. Benefits immensely from small group / 1:1, but chooses whole group 80% of the time when small group offered. Disengages by putting head down or asking to use restroom multiple times when frustrated. Pattern: academic frustration → avoidance.",
+      "strengths": "Likes participating in ELA, loves to help others, motivated by specific positive praise, enjoys peer talk.",
+      "current_grade": "1.8 (standards-based; 3 = full mastery, 2 = partial)",
+      "homework_independent_accuracy": "0%–50%",
+      "with_1_on_1_support_accuracy": "~50%, can participate at grade level"
+    },
+    "math": {
+      "current_performance": "iReady: grade 4 level. Improving with multi-digit operations and integer rules. Working on word-problem skill.",
+      "current_average": "55%",
+      "target": "75%"
+    },
+    "behavioral_social_emotional": {
+      "current_performance": "New to Riverstone Prep, adjusted relatively well. Attends counseling weekly. Prefers small-group / quiet activities. Struggles to regulate when frustrated — often shuts down. Can identify coping strategies in counseling room but doesn't always apply in classroom. Can walk away from difficult situations sometimes; sometimes shuts down instead.",
+      "strengths": "Bright, loves creative activities — drawing, dance, time with peers and family.",
+      "impact": "Frustration → withdrawal → significant time outside classroom checking in with adults → inconsistent in-class time.",
+      "bullying_vulnerability": "More vulnerable due to disability; goals/accommodations developed for self-advocacy."
+    }
+  },
+  "accommodations": {
+    "presentation_of_instruction": [
+      "Repeat directions",
+      "Reminders to pause, plan, proceed",
+      "Copy of teacher's notes"
+    ],
+    "response": [
+      "Reference sheets, graphic organizers, and checklists"
+    ],
+    "timing_scheduling": [
+      "Extra time",
+      "Frequent breaks",
+      "1:1 check-ins",
+      "Scheduled breaks",
+      "Reminder to remain engaged"
+    ],
+    "setting_environment": [
+      "Small group (as needed)",
+      "Sit in the front of the room"
+    ]
+  },
+  "modifications": {
+    "instruction": "Multimodal, inclusion support, small group pull-outs when appropriate"
+  },
+  "annual_goals": [
+    {
+      "id": 1,
+      "area": "Counseling / Self-regulation",
+      "baseline": "Can identify emotions in counseling setting; sometimes does not apply strategies in classroom; can walk away when frustrated but sometimes shuts down.",
+      "goal": "Use a taught calming strategy (deep breathing, movement break, fidget tool, sensory tool, grounding) to calm and re-engage 4 of 5 opportunities.",
+      "criteria": "80% of opportunities",
+      "method": "Observation, work samples",
+      "schedule": "End of quarter",
+      "owner": "Social Worker",
+      "benchmarks": [
+        "Recognize and describe physical cues of being triggered (tense body, faster breathing, lowered head) 4/5 opps with fading adult support.",
+        "Independently request or initiate a calming strategy when dysregulated 4/5 opps.",
+        "Use a taught self-regulation strategy and return to classroom to engage in assigned task; reflect on effectiveness 4/5 opps."
+      ]
+    },
+    {
+      "id": 2,
+      "area": "Mathematics",
+      "baseline": "Improving with multi-digit operations and integer rules; working on multi-step word problems.",
+      "goal": "Improve problem solving of multi-step word problems and grade-level questions involving multiple operations from 55% to 75%.",
+      "method": "Curriculum-based assessment",
+      "schedule": "End of quarter",
+      "owner": "SE Classroom Teacher",
+      "benchmarks": [
+        "Solve word problems with reasoning, 55% → 75%.",
+        "Solve equations with integers and order of operations, 55% → 75%.",
+        "Use reference sheets and class notes, 55% → 75%."
+      ]
+    },
+    {
+      "id": 3,
+      "area": "ELA",
+      "baseline": "Reading at 3rd-grade level; ELA grade 1.8. Difficulty accessing grade-level texts; often does not annotate; reading-homework accuracy 0–50% independent. Adapting to writing system. Needs significant adult support to break down vocabulary, sentence structures, key ideas, and to organize thinking.",
+      "goal": "Independently answer literal and inferential comprehension questions or writing prompts that meet grade-level rubrics, from 50% → 75%.",
+      "method": "Work samples, curriculum-based assessment rubrics",
+      "schedule": "End of quarter",
+      "owner": "SE Classroom Teacher",
+      "benchmarks": [
+        "Accurately annotate a given text for the prompt — labeled annotation focus, supporting detail, etc.",
+        "Independently answer literal comprehension questions (main idea, setting, plot).",
+        "Write a claim that accurately answers each part of the question.",
+        "Independently find effective pieces of textual evidence to support the claim.",
+        "Write analysis showing how evidence supports the claim."
+      ]
+    }
+  ],
+  "service_delivery": [
+    {"goal": [2, 3], "type": "Academic Support (Consultation)", "provider": "Special Education Teacher", "location": "Gen Ed Classroom", "frequency": "Weekly 10 min"},
+    {"goal": [1], "type": "Counseling (Consultation)", "provider": "Counselor", "location": "Counselor's Office", "frequency": "Monthly 10 min"},
+    {"goal": [2], "type": "Math (Direct)", "provider": "Special Education Teacher", "location": "Gen Ed Classroom", "frequency": "Daily 55 min"},
+    {"goal": [3], "type": "ELA (Direct)", "provider": "Special Education Teacher", "location": "Gen Ed Classroom", "frequency": "Daily 55 min"},
+    {"goal": [1], "type": "Counseling (Direct)", "provider": "Counselor", "location": "Counselor's Office", "frequency": "Weekly 30 min"}
+  ],
+  "placement": "Full Inclusion Program (services outside gen ed < 21% of time; 80% inclusion)",
+  "assessment_accommodations": {
+    "mcas": [
+      "Small group test administration (DF1)",
+      "Frequent brief supervised breaks (DF3)",
+      "Separate or alternate test location (DF4)",
+      "Department-approved graphic organizer, checklist, or supplemental reference sheet (A9)"
+    ]
+  }
+}

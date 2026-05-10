@@ -1,0 +1,149 @@
+{
+  "id": "elena",
+  "student": {
+    "name": "Elena María Vargas",
+    "id": "57821EV",
+    "dob": "2012-11-04",
+    "age": 13,
+    "grade": "7",
+    "primary_language": "English",
+    "school": "Riverstone Prep Public Middle School"
+  },
+  "disability": {
+    "category": "Autism Spectrum Disorder",
+    "english_learner": false,
+    "requires_at": false,
+    "summary": "ASD impacts pragmatic language, sensory regulation, and flexibility with novel/unstructured tasks. Cognition is above grade level (especially in math). Literal comprehension is strong; figurative language, inference, and perspective-taking are emerging. Predictable routines, visual schedules, and reduced-sensory environments are required for access. Heritage Spanish is spoken at home; instruction is in English."
+  },
+  "student_vision": {
+    "this_year": {
+      "math": "Work on harder problems like the 8th-grade extension packet.",
+      "ela": "Understand what authors mean when they don't say it directly.",
+      "social": "Have one lunch friend I see every Tuesday and Thursday.",
+      "sensory": "Use my noise-cancelling headphones without anyone asking why."
+    },
+    "long_term": [
+      "Take Algebra I in 8th grade.",
+      "Tell a teacher when I need a break before I melt down."
+    ]
+  },
+  "present_levels": {
+    "academics_general": {
+      "current_performance": "Strong cognitive profile. iReady math: grade 9 level (Fall 2025). iReady reading: grade 7 overall, with literal comprehension at G8 and inferential comprehension at G5. Engages deeply with topics of interest (marine biology, prime numbers, Studio Ghibli). Becomes dysregulated by unannounced schedule changes, fluorescent flicker, cafeteria noise, and group work without assigned roles.",
+      "strengths": "Exceptional pattern recognition, retention of factual detail, precise vocabulary, strong work ethic when expectations are explicit and visual.",
+      "impact": "Without predictable routines, visual schedules, and sensory accommodations, Elena's access to instruction collapses — she may shut down, script, or leave the room. With supports, she performs at or above grade level across content areas."
+    },
+    "ela": {
+      "current_performance": "Decoding and fluency well above grade level. Literal recall is near perfect. Inferential and figurative-language items (idioms, metaphor, author's purpose, character motivation) are answered literally — e.g., 'It's raining cats and dogs' interpreted as a weather anomaly. Writing is grammatically clean but lacks audience awareness; tends toward expository even when prompt asks for narrative.",
+      "strengths": "Precise vocabulary, accurate citations, willingness to revise when feedback is concrete and rule-based.",
+      "current_grade": "2.6 (standards-based; 3 = full mastery)",
+      "homework_independent_accuracy": "95% on literal items; 35–50% on inference/figurative items",
+      "with_visual_scaffold_accuracy": "75–85% on inference items when given a sentence-frame organizer with explicit 'clue → guess → check' steps"
+    },
+    "math": {
+      "current_performance": "Working one to two grade levels above peers. Has completed the grade-7 curriculum benchmark assessment at 96%. Currently on an extension track covering pre-algebra and introductory functions.",
+      "current_average": "94%",
+      "target": "Maintain 90%+ on grade-7 work while completing a parallel extension unit per quarter."
+    },
+    "behavioral_social_emotional": {
+      "current_performance": "Prefers parallel play and structured cooperative tasks with assigned roles. Pragmatic language (turn-taking, topic maintenance, repair after misunderstanding) is an active goal area. Sensory triggers: cafeteria, assemblies, fire drills (pre-warning required), group transitions. Uses noise-cancelling headphones and a tactile fidget. Has a 'safe space' pass to the resource room (max 2 uses per day, signed in/out).",
+      "strengths": "Honest, rule-following, deeply loyal to a small set of trusted adults, kind to younger students.",
+      "impact": "Sensory overload + pragmatic-language demands → scripting, echolalia, or shutdown. With visual schedule + headphones + advance notice of changes, Elena participates fully.",
+      "bullying_vulnerability": "Elevated due to literal interpretation of peer sarcasm; self-advocacy goal addresses naming and reporting."
+    }
+  },
+  "accommodations": {
+    "presentation_of_instruction": [
+      "Visual schedule posted at desk and updated by 8:00 AM daily",
+      "Advance notice (24 hr when possible, 5 min minimum) of schedule changes, substitutes, or fire drills",
+      "Directions given in writing AND orally; no idioms in directions",
+      "Pre-teach figurative language and idioms before any text containing them"
+    ],
+    "response": [
+      "Sentence-frame organizers for inference and figurative-language items ('The text says ___ → I think this means ___ → because ___')",
+      "Permission to type rather than handwrite when fine-motor fatigue triggers regulation issues",
+      "Written response accepted in place of oral participation for whole-group share-outs"
+    ],
+    "timing_scheduling": [
+      "Scheduled sensory breaks at 10:15 AM and 1:30 PM (3 min, non-negotiable)",
+      "Two 'safe space' resource-room passes per day, signed in/out",
+      "Extra time (1.5x) on assessments containing inference or open-response items"
+    ],
+    "setting_environment": [
+      "Seat away from fluorescent flicker zone and away from pencil sharpener / door",
+      "Noise-cancelling headphones permitted at all times without staff prompting",
+      "Cafeteria alternative: lunch in resource room with 1 invited peer on Tuesdays and Thursdays",
+      "Assigned role in every group task (recorder, timekeeper, materials manager)"
+    ]
+  },
+  "modifications": {
+    "instruction": "Math: parallel extension track (pre-algebra) alongside grade-7 curriculum. ELA: figurative-language pre-teaching with explicit rule cards. No 'cold call' on inference questions without 30-second think-time and access to organizer."
+  },
+  "annual_goals": [
+    {
+      "id": 1,
+      "area": "Pragmatic communication / Self-regulation",
+      "baseline": "Identifies own dysregulation cues with adult prompting in 2/5 opportunities. Requests sensory break independently in 1/5 opportunities. Repairs pragmatic breakdowns (misread sarcasm, topic switch) with adult coaching only.",
+      "goal": "Independently recognize an early dysregulation cue and request a taught regulation strategy (headphones, sensory break, safe-space pass, deep pressure) in 4 of 5 opportunities across settings, AND use a taught repair phrase ('Wait, did you mean that literally?', 'I need a minute') in 3 of 5 pragmatic-breakdown opportunities.",
+      "criteria": "80% across 4 consecutive data days",
+      "method": "Direct observation, BIP data sheet, counselor log",
+      "schedule": "End of each quarter",
+      "owner": "School Counselor / Case Manager",
+      "benchmarks": [
+        "Name 3 personal early-warning signs of overload using a visual cue card.",
+        "Independently retrieve and use noise-cancelling headphones when overload signs appear, 4/5 opps.",
+        "Use a taught repair phrase after a peer interaction breakdown, 3/5 opps with fading prompts.",
+        "Sign in and out of the safe-space pass independently, staying within the 2-pass daily limit."
+      ]
+    },
+    {
+      "id": 2,
+      "area": "Mathematics — Extension / Advanced reasoning",
+      "baseline": "Scoring 94% on grade-7 curriculum-based assessments. Completed grade-7 benchmark at 96%. Has not yet been formally assessed on multi-step pre-algebraic reasoning or function notation.",
+      "goal": "While maintaining 90%+ on grade-7 work, demonstrate mastery (80%+) of one pre-algebra extension unit per quarter: (Q1) integer & rational operations, (Q2) one- and two-step linear equations, (Q3) introduction to functions and function notation, (Q4) systems of equations via substitution.",
+      "criteria": "80% on extension unit assessment + 90% on grade-level work",
+      "method": "Curriculum-based assessment + extension unit performance task",
+      "schedule": "End of each quarter",
+      "owner": "General Education Math Teacher (with SE Teacher consult)",
+      "benchmarks": [
+        "Solve two-step linear equations with rational coefficients, 80% accuracy.",
+        "Translate verbal descriptions into function notation, 4/5 items.",
+        "Justify a solution path in writing using precise mathematical vocabulary, scored 3/4 on rubric."
+      ]
+    },
+    {
+      "id": 3,
+      "area": "ELA — Figurative language and inference",
+      "baseline": "Literal comprehension at G8; inferential at G5. Independently answers figurative-language items at 35–50%. With sentence-frame organizer, accuracy rises to 75–85%.",
+      "goal": "Independently (without organizer) answer grade-level inferential and figurative-language comprehension questions — author's purpose, character motivation, idiom/metaphor interpretation — at 70% accuracy across 4 of 5 consecutive curriculum-based probes.",
+      "criteria": "70% across 4 of 5 consecutive probes",
+      "method": "Work samples, curriculum-based assessment, rubric-scored short responses",
+      "schedule": "End of quarter",
+      "owner": "SE Classroom Teacher",
+      "benchmarks": [
+        "Apply the 'clue → guess → check' rule card to 5 idioms per week, 80% accuracy.",
+        "Identify character motivation using a 3-step text-evidence frame, 4/5 prompts.",
+        "Distinguish literal vs figurative meaning of a target sentence in a grade-level passage, 4/5 items.",
+        "Generate one inference per paragraph during guided reading, with text evidence cited."
+      ]
+    }
+  ],
+  "service_delivery": [
+    {"goal": [1], "type": "Counseling (Direct)", "provider": "School Counselor", "location": "Counselor's Office", "frequency": "Weekly 30 min"},
+    {"goal": [1], "type": "Social Skills Group (Direct)", "provider": "Speech-Language Pathologist", "location": "Pull-out", "frequency": "2x/week 30 min"},
+    {"goal": [2], "type": "Math Extension (Consultation)", "provider": "Gen Ed Math Teacher + SE Teacher", "location": "Gen Ed Classroom", "frequency": "Weekly 15 min"},
+    {"goal": [3], "type": "ELA (Direct)", "provider": "Special Education Teacher", "location": "Gen Ed Classroom", "frequency": "Daily 45 min"},
+    {"goal": [1, 3], "type": "Case Management (Consultation)", "provider": "Case Manager", "location": "Gen Ed Classroom", "frequency": "Weekly 15 min"}
+  ],
+  "placement": "Full Inclusion Program (services outside gen ed < 21% of time; sensory breaks and social skills group account for pull-out time)",
+  "assessment_accommodations": {
+    "mcas": [
+      "Small group test administration (DF1)",
+      "Frequent brief supervised breaks (DF3)",
+      "Separate or alternate test location with reduced sensory stimuli (DF4)",
+      "Noise-cancelling headphones (DF7)",
+      "Extended time 1.5x (T1)",
+      "Department-approved graphic organizer for inference/figurative items (A9)"
+    ]
+  }
+}

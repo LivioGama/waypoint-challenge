@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waypoint — IEP Lesson Adapter</title>
+  <meta name="description" content="Adapt tomorrow's lesson to one student's IEP in 30 seconds. MCP server with two-sided citation discipline (IEP element + lesson part), 4-draft refinement loop, and verifier-in-the-loop hallucination control.">
+  <meta name="keywords" content="IEP, special education, MCP, Model Context Protocol, lesson differentiation, IDEA, accommodations, teacher tools, Claude Desktop">
+  <meta name="author" content="Livio Gamassia">
+  <link rel="canonical" href="https://waypoint-challenge.vercel.app/">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#1E3A5F">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://waypoint-challenge.vercel.app/">
+  <meta property="og:site_name" content="Waypoint IEP Adapter">
+  <meta property="og:title" content="Waypoint — IEP Lesson Adapter">
+  <meta property="og:description" content="Turn one student's IEP + tomorrow's lesson into a teacher-ready packet. Two-sided citations, 4-draft + judge refinement, +147% citation match rate vs naive single-shot.">
+  <meta property="og:image" content="https://waypoint-challenge.vercel.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Waypoint IEP Adapter — MCP server for special-ed lesson differentiation">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Waypoint — IEP Lesson Adapter">
+  <meta name="twitter:description" content="Adapt tomorrow's lesson to one student's IEP in 30 seconds. MCP server, citation verifier, +147% grounding vs naive baseline.">
+  <meta name="twitter:image" content="https://waypoint-challenge.vercel.app/og-image.png">
+
+  <link rel="icon" type="image/svg+xml" href="/icon.svg">
+  <link rel="apple-touch-icon" href="/apple-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Waypoint IEP Adapter",
+    "description": "MCP server that turns one student's IEP + tomorrow's lesson into a classroom-ready packet of instructional modifications.",
+    "url": "https://waypoint-challenge.vercel.app",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web, Claude Desktop, any MCP host",
+    "creator": { "@type": "Person", "name": "Livio Gamassia", "url": "https://github.com/LivioGama" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "softwareRequirements": "MCP-compatible client (Claude Desktop, Cursor) OR modern web browser"
+  }
+  </script>
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --color-bg:        #F8FAFC;
+      --color-surface:   #FFFFFF;
+      --color-border:    #E4E7EB;
+      --color-muted-bg:  #F1F3F5;
+      --color-text:      #0F172A;
+      --color-muted:     #64748B;
+      --color-subtle:    #94A3B8;
+      --color-primary:   #1E3A5F;
+      --color-blue:      #2563EB;
+      --color-blue-dark: #1D4ED8;
+      --color-blue-tint: #EFF6FF;
+      --color-blue-mid:  #DBEAFE;
+      --color-success:   #059669;
+      --color-success-bg:#ECFDF5;
+      --color-success-border: #6EE7B7;
+      --color-warn:      #D97706;
+      --color-warn-bg:   #FFFBEB;
+      --color-warn-border:#FCD34D;
+      --color-danger:    #DC2626;
+      --radius-sm: 6px;
+      --radius:    10px;
+      --radius-lg: 14px;
+      --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.07);
+      --font-head: 'Poppins', system-ui, sans-serif;
+      --font-body: 'Open Sans', system-ui, sans-serif;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; scrollbar-gutter: stable; }
+    body { font-family: var(--font-body); background: var(--color-bg); color: var(--color-text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    /* ── Layout ── */
+    .wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+
+    /* ── Header ── */
+    header { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+    .wordmark { font-family: var(--font-head); font-size: 1.1rem; font-weight: 700; color: var(--color-primary); letter-spacing: -0.01em; flex: 1; }
+    .wordmark span { color: var(--color-blue); }
+    .status-pill { display: flex; align-items: center; gap: 6px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 999px; padding: 4px 12px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-subtle); transition: background 0.3s; flex-shrink: 0; }
+    .dot.online { background: var(--color-success); box-shadow: 0 0 0 3px rgba(5,150,105,0.15); }
+    .status { font-size: 0.78rem; color: var(--color-muted); font-weight: 500; white-space: nowrap; }
+
+    /* ── Accordion ── */
+    .accordion { background: var(--color-surface); border-radius: var(--radius-lg); margin-bottom: 10px; box-shadow: var(--shadow-sm); border: 1px solid var(--color-border); overflow: hidden; }
+    .accordion-header { display: flex; align-items: center; gap: 14px; padding: 18px 24px; cursor: pointer; user-select: none; transition: background 0.15s; }
+    .accordion-header:hover { background: var(--color-muted-bg); }
+    .accordion.open > .accordion-header { border-bottom: 1px solid var(--color-border); }
+    .accordion-step { width: 28px; height: 28px; border-radius: 50%; background: var(--color-muted-bg); color: var(--color-subtle); font-size: 0.78rem; font-weight: 700; font-family: var(--font-head); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s, color 0.2s; border: 1.5px solid var(--color-border); }
+    .accordion.open  .accordion-step { background: var(--color-blue); color: #fff; border-color: var(--color-blue); }
+    .accordion.done  .accordion-step { background: var(--color-success); color: #fff; border-color: var(--color-success); }
+    .accordion-title { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--color-primary); flex: 1; }
+    .accordion-summary { font-size: 0.8rem; color: var(--color-muted); margin-right: 8px; }
+    .accordion-chevron { font-size: 0.7rem; color: var(--color-subtle); transition: transform 0.2s; }
+    .accordion.open .accordion-chevron { transform: rotate(180deg); }
+    .accordion-body { padding: 0 24px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
+    .accordion.open .accordion-body { padding: 24px; max-height: 4000px; }
+    .section-next { margin-top: 24px; display: flex; justify-content: flex-end; }
+
+    /* ── Buttons ── */
+    button { font-family: var(--font-body); background: var(--color-blue); color: #fff; border: none; padding: 10px 20px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: background 0.15s, box-shadow 0.15s; line-height: 1.4; }
+    button:hover:not(:disabled) { background: var(--color-blue-dark); }
+    button:focus-visible { outline: 2px solid var(--color-blue); outline-offset: 2px; }
+    button:disabled { background: var(--color-subtle); cursor: not-allowed; opacity: 0.7; }
+    button.secondary { background: var(--color-surface); color: var(--color-blue); border: 1.5px solid var(--color-border); }
+    button.secondary:hover:not(:disabled) { background: var(--color-blue-tint); border-color: var(--color-blue-mid); }
+    button.btn-primary { background: var(--color-primary); }
+    button.btn-primary:hover:not(:disabled) { background: #162d4a; }
+    button.btn-success { background: var(--color-success); }
+    button.btn-success:hover:not(:disabled) { background: #047857; }
+
+    /* ── Form controls ── */
+    select { font: inherit; font-size: 0.9rem; padding: 9px 12px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); color: var(--color-text); min-width: 260px; cursor: pointer; transition: border-color 0.15s; }
+    select:focus { outline: none; border-color: var(--color-blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+    .controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+
+    /* ── Lesson picker ── */
+    .lesson-picker { display: flex; align-items: stretch; gap: 12px; margin-bottom: 16px; }
+    .lesson-picker-btn { background: var(--color-surface); border: 1.5px solid var(--color-border); color: var(--color-blue); padding: 0 14px; border-radius: var(--radius-sm); cursor: pointer; font-size: 1rem; font-weight: 700; transition: all 0.15s; min-width: 40px; display: flex; align-items: center; justify-content: center; }
+    .lesson-picker-btn:hover:not(:disabled) { background: var(--color-blue-tint); border-color: var(--color-blue); }
+    .lesson-picker-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .lesson-card { flex: 1; background: var(--color-muted-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius); padding: 16px 20px; position: relative; overflow: hidden; }
+    .lesson-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--color-blue); border-radius: var(--radius) var(--radius) 0 0; }
+    .lesson-card h3 { font-family: var(--font-head); font-size: 0.95rem; font-weight: 600; color: var(--color-primary); margin-bottom: 10px; padding-top: 4px; line-height: 1.3; }
+    .lesson-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag { padding: 3px 9px; border-radius: var(--radius-sm); font-size: 0.74rem; font-weight: 600; border: 1px solid transparent; }
+    .tag.blue   { background: var(--color-blue-tint); color: var(--color-blue); border-color: var(--color-blue-mid); }
+    .tag.amber  { background: var(--color-warn-bg); color: var(--color-warn); border-color: var(--color-warn-border); }
+    .tag.green  { background: var(--color-success-bg); color: var(--color-success); border-color: var(--color-success-border); }
+    .tag.plain  { background: var(--color-muted-bg); color: var(--color-muted); border-color: var(--color-border); }
+    .lesson-counter { font-size: 0.75rem; color: var(--color-muted); text-align: center; margin-top: 6px; font-weight: 500; }
+
+    /* ── IEP chips ── */
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .chip { background: var(--color-surface); color: var(--color-blue); padding: 5px 13px; border-radius: 999px; font-size: 0.82rem; font-weight: 500; cursor: pointer; border: 1.5px solid var(--color-blue-mid); transition: all 0.15s; font-family: var(--font-body); }
+    .chip:hover { background: var(--color-blue-tint); }
+    .chip.active { background: var(--color-blue); color: #fff; border-color: var(--color-blue); }
+    pre.json { background: var(--color-primary); color: #CBD5E1; padding: 16px; border-radius: var(--radius-sm); overflow: auto; margin-top: 12px; font-size: 0.76rem; max-height: 280px; font-family: ui-monospace, 'SF Mono', Menlo, monospace; line-height: 1.6; }
+
+    /* ── Lesson body toggle ── */
+    .lesson-body { max-height: 0; overflow: hidden; transition: max-height 0.25s ease; }
+    .lesson-body.open { max-height: 700px; overflow-y: auto; }
+    .toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 11px 14px; background: var(--color-muted-bg); border-radius: var(--radius-sm); margin-top: 12px; border: 1px solid var(--color-border); transition: background 0.15s; }
+    .toggle:hover { background: #E8EBF0; }
+    .toggle strong { font-size: 0.88rem; color: var(--color-primary); }
+    .toggle .arrow { font-size: 0.7rem; color: var(--color-subtle); transition: transform 0.2s; }
+    .toggle.open .arrow { transform: rotate(90deg); }
+
+    /* ── Upload ── */
+    .upload-section { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--color-border); }
+    .or-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0 16px; }
+    .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--color-border); }
+    .or-divider span { font-size: 0.72rem; font-weight: 700; color: var(--color-subtle); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+    .upload-tabs { display: flex; gap: 4px; margin-bottom: 16px; background: var(--color-muted-bg); border-radius: var(--radius-sm); padding: 3px; width: fit-content; }
+    .upload-tabs label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.84rem; font-weight: 500; color: var(--color-muted); padding: 5px 14px; border-radius: 4px; transition: all 0.15s; }
+    .upload-tabs label:has(input:checked) { background: var(--color-surface); color: var(--color-primary); box-shadow: var(--shadow-xs); }
+    .upload-tabs input[type="radio"] { display: none; }
+    .input-group { margin-bottom: 12px; }
+    .input-group > label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 5px; color: var(--color-primary); }
+    .input-group input[type="file"],
+    .input-group input[type="text"],
+    .input-group textarea { width: 100%; padding: 9px 12px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); font: inherit; font-size: 0.88rem; color: var(--color-text); background: var(--color-surface); transition: border-color 0.15s; }
+    .input-group input:focus, .input-group textarea:focus { outline: none; border-color: var(--color-blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+    .input-group textarea { resize: vertical; min-height: 100px; }
+    .hint { font-size: 0.76rem; color: var(--color-muted); margin-top: 4px; }
+    .required { color: var(--color-danger); }
+    .file-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .file-row > div { flex: 1; min-width: 180px; }
+
+    /* ── Progress ── */
+    .progress { margin-top: 20px; padding: 28px; background: var(--color-blue-tint); border: 1.5px solid var(--color-blue-mid); border-radius: var(--radius-lg); }
+    .progress-hero { text-align: center; margin-bottom: 24px; }
+    .progress-spinner { width: 44px; height: 44px; border: 3px solid var(--color-blue-mid); border-top-color: var(--color-blue); border-radius: 50%; animation: spin 0.75s linear infinite; margin: 0 auto 14px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .progress-spinner { animation: none; border-top-color: var(--color-blue); } }
+    .progress-phase-label { font-family: var(--font-head); font-size: 1.05rem; font-weight: 600; color: var(--color-primary); margin-bottom: 4px; }
+    .progress-elapsed { font-size: 0.82rem; color: var(--color-muted); }
+    .candidates { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+    .cand { background: var(--color-surface); border: 1.5px solid var(--color-border); border-radius: var(--radius-sm); padding: 12px 8px; text-align: center; font-size: 0.78rem; transition: all 0.2s; }
+    .cand .name { font-family: var(--font-head); font-weight: 600; margin-bottom: 4px; font-size: 0.8rem; color: var(--color-primary); }
+    .cand .state { font-size: 0.72rem; color: var(--color-subtle); }
+    .cand.draft  { background: var(--color-blue-tint); border-color: #93C5FD; animation: pulse-blue 1.5s ease-in-out infinite; }
+    .cand.crit   { background: var(--color-warn-bg);   border-color: var(--color-warn-border); animation: pulse-amber 1.5s ease-in-out infinite; }
+    .cand.revise { background: #FDF4FF; border-color: #E879F9; animation: pulse-pink 1.5s ease-in-out infinite; }
+    .cand.done   { background: var(--color-success-bg); border-color: var(--color-success-border); animation: none; }
+    .cand.done .state { color: var(--color-success); font-weight: 600; }
+    .cand.winner { background: var(--color-success); border-color: #047857; color: #fff; animation: none; transform: scale(1.04); }
+    .cand.winner .name, .cand.winner .state { color: #D1FAE5; }
+    @keyframes pulse-blue  { 0%,100%{ box-shadow:0 0 0 0 rgba(37,99,235,0);  } 50%{ box-shadow:0 0 0 4px rgba(37,99,235,0.15);  } }
+    @keyframes pulse-amber { 0%,100%{ box-shadow:0 0 0 0 rgba(217,119,6,0);  } 50%{ box-shadow:0 0 0 4px rgba(217,119,6,0.15);  } }
+    @keyframes pulse-pink  { 0%,100%{ box-shadow:0 0 0 0 rgba(217,70,239,0); } 50%{ box-shadow:0 0 0 4px rgba(217,70,239,0.15); } }
+    .log { max-height: 72px; overflow-y: auto; font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 0.7rem; color: var(--color-muted); border-top: 1px solid var(--color-blue-mid); padding-top: 10px; }
+    .phase-steps { display: flex; margin-bottom: 20px; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--color-blue-mid); }
+    .phase-step { flex: 1; text-align: center; font-size: 0.72rem; font-weight: 600; padding: 6px 4px; color: var(--color-muted); background: var(--color-surface); border-right: 1px solid var(--color-blue-mid); }
+    .phase-step:last-child { border-right: none; }
+    .phase-step.active { background: var(--color-blue); color: #fff; }
+    .phase-step.done   { background: var(--color-success); color: #fff; }
+
+    /* ── Result / Packet ── */
+    .result { margin-top: 20px; padding: 20px; background: var(--color-success-bg); border: 1.5px solid var(--color-success-border); border-radius: var(--radius-lg); }
+    .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .result-title { font-family: var(--font-head); font-size: 1rem; font-weight: 600; color: #065F46; }
+    .result-collapse { background: none; border: 1px solid var(--color-success-border); color: #065F46; padding: 4px 12px; font-size: 0.78rem; font-weight: 500; }
+    .result-collapse:hover:not(:disabled) { background: #D1FAE5; }
+    .packet { max-height: 540px; overflow-y: auto; padding: 20px; background: var(--color-surface); border-radius: var(--radius-sm); font-size: 0.9rem; line-height: 1.65; margin-top: 12px; }
+    .packet.collapsed { max-height: 0; padding: 0; overflow: hidden; margin-top: 0; }
+    .packet h1 { font-family: var(--font-head); font-size: 1.25rem; font-weight: 700; color: var(--color-primary); margin: 0 0 16px; }
+    .packet h2 { font-family: var(--font-head); font-size: 1.05rem; font-weight: 600; color: var(--color-primary); margin: 20px 0 8px; padding-bottom: 6px; border-bottom: 1.5px solid var(--color-border); }
+    .packet h3 { font-family: var(--font-head); font-size: 0.92rem; font-weight: 600; color: var(--color-blue); margin: 14px 0 6px; }
+    .packet h4 { font-size: 0.85rem; font-weight: 600; color: var(--color-muted); margin: 10px 0 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .packet p { margin: 6px 0; color: var(--color-text); }
+    .packet ul, .packet ol { margin: 6px 0 6px 20px; }
+    .packet li { margin: 3px 0; }
+    .packet hr { border: none; border-top: 1px solid var(--color-border); margin: 16px 0; }
+    .packet code { background: var(--color-muted-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.83em; font-family: ui-monospace, monospace; }
+    .packet table { border-collapse: collapse; margin: 12px 0; font-size: 0.84rem; width: 100%; }
+    .packet th, .packet td { border: 1px solid var(--color-border); padding: 7px 12px; text-align: left; }
+    .packet th { background: var(--color-muted-bg); font-weight: 600; color: var(--color-primary); }
+    .packet mark.new     { background: #DCFCE7; color: #14532D; padding: 2px 6px; border-radius: 4px; border-bottom: 2px solid #16A34A; font-weight: 500; }
+    .packet mark.changed { background: #FEF3C7; color: #78350F; padding: 2px 6px; border-radius: 4px; border-bottom: 2px solid #F59E0B; font-weight: 500; }
+    .packet mark.same    { background: var(--color-muted-bg); color: var(--color-subtle); padding: 2px 6px; border-radius: 4px; border-bottom: 2px solid var(--color-border); text-decoration: line-through; }
+    .judge-reason { font-size: 0.82rem; color: #065F46; font-style: italic; margin-bottom: 12px; }
+
+    /* ── Utilities ── */
+    .hidden { display: none !important; }
+    .model-meta { margin-left: 12px; font-size: 0.8rem; color: var(--color-muted); }
+    p.body-hint { color: var(--color-muted); font-size: 0.88rem; margin-bottom: 16px; line-height: 1.55; }
+    footer { text-align: center; color: var(--color-subtle); font-size: 0.76rem; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--color-border); }
+    footer a { color: var(--color-blue); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+  <script defer data-domain="waypoint-challenge.vercel.app" data-api="https://plausible.liviogama.com/api/event" src="https://plausible.liviogama.com/js/script.js"></script>
+  <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="wordmark">way<span>point</span></div>
+      <div class="status-pill">
+        <span class="dot" id="dot"></span>
+        <span class="status" id="dotText">connecting…</span>
+      </div>
+    </header>
+
+    <!-- Step 1: Student -->
+    <div class="accordion open" id="acc1">
+      <div class="accordion-header" onclick="toggleAccordion('acc1')">
+        <div class="accordion-step">1</div>
+        <div class="accordion-title">Student</div>
+        <div class="accordion-summary" id="acc1summary"></div>
+        <div class="accordion-chevron">▼</div>
+      </div>
+      <div class="accordion-body">
+        <p class="body-hint">About 1 in 7 American kids needs the lesson adjusted. The IEP describes exactly what this student needs — click any tag to see what the AI reads.</p>
+        <div class="controls">
+          <select id="studentSel"></select>
+        </div>
+        <div id="chips" class="chips"></div>
+        <pre id="json" class="json hidden"></pre>
+        <div class="section-next">
+          <button onclick="goToStep(2)">Next: Choose Lesson →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Lesson -->
+    <div class="accordion" id="acc2">
+      <div class="accordion-header" onclick="toggleAccordion('acc2')">
+        <div class="accordion-step">2</div>
+        <div class="accordion-title">Lesson</div>
+        <div class="accordion-summary" id="acc2summary"></div>
+        <div class="accordion-chevron">▼</div>
+      </div>
+      <div class="accordion-body">
+        <p class="body-hint" style="font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; color: var(--color-subtle);">Demo lessons</p>
+        <div class="lesson-picker">
+          <button class="lesson-picker-btn" id="lessonPrev">←</button>
+          <div class="lesson-card">
+            <h3 id="lessonCardTitle">Loading…</h3>
+            <div class="lesson-meta" id="lessonMeta"></div>
+          </div>
+          <button class="lesson-picker-btn" id="lessonNext">→</button>
+        </div>
+        <div class="lesson-counter"><span id="lessonCounter">1/2</span></div>
+
+        <div class="toggle" id="lessonToggle">
+          <span><strong>Show original lesson text</strong> — the unmodified source the class reads</span>
+          <span class="arrow">▶</span>
+        </div>
+        <div id="lessonBody" class="lesson-body"></div>
+
+        <div class="upload-section">
+          <div class="or-divider"><span>or upload your own</span></div>
+          <div class="upload-tabs">
+            <label><input type="radio" name="inputMethod" value="file" checked id="methodFile"> Upload file</label>
+            <label><input type="radio" name="inputMethod" value="paste" id="methodPaste"> Paste text</label>
+          </div>
+          <div id="fileInputSection">
+            <div class="file-row">
+              <div>
+                <div class="input-group">
+                  <label><span class="required">*</span> Lesson text (.txt)</label>
+                  <input type="file" id="txtInput" accept=".txt" required>
+                  <div class="hint">Required — the actual lesson content</div>
+                </div>
+              </div>
+              <div>
+                <div class="input-group">
+                  <label>JSON metadata (optional)</label>
+                  <input type="file" id="jsonInput" accept=".json">
+                  <div class="hint">Auto-generated from filename if omitted</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="pasteInputSection" class="hidden">
+            <div class="input-group">
+              <label><span class="required">*</span> Lesson text</label>
+              <textarea id="txtPaste" placeholder="Paste your lesson text here..."></textarea>
+              <div class="hint">Required — paste the actual lesson content</div>
+            </div>
+            <div class="input-group">
+              <label><span class="required">*</span> Lesson name</label>
+              <input type="text" id="lessonNameInput" value="My Lesson" placeholder="e.g., Community Essay Lesson">
+              <div class="hint">Used to generate lesson ID</div>
+            </div>
+          </div>
+          <button id="uploadBtn" style="margin-top: 8px;">⬆ Upload Lesson</button>
+          <div id="uploadStatus" style="margin-top: 8px; font-size: 0.85rem; color: var(--color-muted);"></div>
+        </div>
+
+        <div class="section-next">
+          <button onclick="goToStep(3)">Next: Adapt Lesson →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Generate -->
+    <div class="accordion" id="acc3">
+      <div class="accordion-header" onclick="toggleAccordion('acc3')">
+        <div class="accordion-step">3</div>
+        <div class="accordion-title">Adapt Lesson</div>
+        <div class="accordion-summary" id="acc3summary"></div>
+        <div class="accordion-chevron">▼</div>
+      </div>
+      <div class="accordion-body">
+        <p class="body-hint">AI writes 4 drafts in parallel, then judges the best. Each draft takes a different angle — Part A: teacher cheat sheet, Part B: modified lesson plan, Part C: modified student materials. Takes about 20–30 s.</p>
+        <button id="genBtn">▶ Adapt Lesson</button>
+        <span id="modelMeta" class="model-meta"></span>
+
+        <div id="progress" class="progress hidden">
+          <div class="progress-hero">
+            <div class="progress-spinner" id="progressSpinner"></div>
+            <div class="progress-phase-label" id="phase">Starting…</div>
+            <div class="progress-elapsed"><span id="elapsed">0s</span> elapsed · <span id="modelMeta2"></span></div>
+          </div>
+          <div class="phase-steps">
+            <div class="phase-step" id="stepDraft">Drafting</div>
+            <div class="phase-step" id="stepJudge">Judging</div>
+            <div class="phase-step" id="stepDone">Done</div>
+          </div>
+          <div class="candidates" id="cands"></div>
+          <div class="log" id="log"></div>
+        </div>
+
+        <div id="result" class="result hidden">
+          <div class="result-header">
+            <h3>✅ Packet Ready</h3>
+            <button class="result-collapse secondary" id="collapseBtn">▲ Collapse</button>
+          </div>
+          <div id="judge" class="judge-reason"></div>
+          <div id="packet" class="packet"></div>
+          <button class="secondary" id="dl">⬇ Download as Markdown</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>Single-page demo · works with OpenAI and Anthropic · <a href="https://github.com/LivioGama/waypoint-challenge" target="_blank" rel="noopener">GitHub</a> · <a href="https://waypoint-challenge.vercel.app" target="_blank" rel="noopener">Vercel</a></footer>
+  </div>
+
+  <script>
+    // ===== DATA =====
+    window.STUDENTS = [
+      {id: "jasmine", name: "Jasmine Regina Bailey", grade: "7", disability: "Health Impairment"},
+      {id: "marcus", name: "Marcus Reyes", grade: "7", disability: "Specific Learning Disability (Dyslexia)"}
+    ];
+    window.LESSONS = [
+      {id: "community-essay", title: "What is 'community' and why is it important?", subject: "ELA", grade: "7", duration_min: 45, standards: ["RI.7.2", "RI.7.4"]},
+      {id: "persuasive-essay", title: "Writing a Persuasive Essay on a Social Issue", subject: "ELA", grade: "7", duration_min: 50, standards: ["W.7.1", "W.7.4"]}
+    ];
+
+    // ===== HELPERS =====
+    const $ = id => document.getElementById(id);
+    const fetchJSON = async (url, opts) => {
+      const r = await fetch(url, opts);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json();
+    };
+
+    // ===== HEALTH =====
+    let healthIv;
+    async function tickHealth() {
+      try {
+        const d = await fetchJSON('/api/health');
+        const ok = d.status === 'ok' && d.mcpInitialized;
+        $('dot').classList.toggle('online', ok);
+        $('dotText').textContent = ok ? 'AI helper ready' : 'connecting…';
+      } catch {
+        $('dot').classList.remove('online');
+        $('dotText').textContent = 'offline';
+      }
+    }
+    function startHealthCheck() {
+      tickHealth();
+      healthIv = setInterval(async () => {
+        await tickHealth();
+        if ($('dot').classList.contains('online')) {
+          clearInterval(healthIv);
+          healthIv = setInterval(tickHealth, 10000);
+        }
+      }, 1000);
+    }
+
+    // ===== STATE =====
+    let currentStudent = window.STUDENTS[0].id;
+    let currentLesson = window.LESSONS[0].id;
+    let loadedLessonId = null;
+    let currentPacket = null;
+
+    // ===== SECTION LABELS =====
+    const SECTION_LABELS = {
+      'student': '👧 Who they are',
+      'disability': '🩺 What makes school hard',
+      'student_vision': '🎯 What they want this year',
+      'present_levels': '📊 Where they are now',
+      'present_levels.ela': '📖 Reading & writing',
+      'present_levels.math': '🔢 Math',
+      'present_levels.behavioral': '💭 How they handle class',
+      'accommodations': '🪜 Daily supports',
+      'modifications': '✂️ Changes to the work',
+      'annual_goals': '🏁 All goals this year',
+      'service_delivery': '🤝 Who helps, when',
+      'placement': '🏫 Which classroom',
+      'assessment_accommodations': '📝 Test-day supports',
+    };
+
+    // ===== PROFILE =====
+    async function loadProfile() {
+      const wrap = $('chips');
+      wrap.replaceChildren();
+      $('json').classList.add('hidden');
+      
+      const sections = await fetchJSON('/api/sections');
+      const goals = await fetchJSON(`/api/section?name=annual_goals&student_id=${encodeURIComponent(currentStudent)}`);
+      const goalLabels = (goals || []).map(g => `goal.${g.id}`);
+      const goalAreaById = Object.fromEntries((goals || []).map(g => [`goal.${g.id}`, g.area]));
+      
+      let active = null;
+      [...sections, ...goalLabels].forEach(name => {
+        const b = document.createElement('button');
+        b.className = 'chip';
+        b.textContent = SECTION_LABELS[name] ?? `🏁 Goal — ${goalAreaById[name] ?? name}`;
+        b.addEventListener('click', async () => {
+          try {
+            const data = await fetchJSON(`/api/section?name=${encodeURIComponent(name)}&student_id=${encodeURIComponent(currentStudent)}`);
+            $('json').textContent = JSON.stringify(data, null, 2);
+            $('json').classList.remove('hidden');
+            if (active) active.classList.remove('active');
+            b.classList.add('active');
+            active = b;
+          } catch (e) { alert('Error: ' + e.message); }
+        });
+        wrap.appendChild(b);
+      });
+    }
+
+    function renderStudentSelector() {
+      const sel = $('studentSel');
+      sel.replaceChildren();
+      window.STUDENTS.forEach(s => {
+        const o = document.createElement('option');
+        o.value = s.id;
+        o.textContent = `${s.name} · ${s.disability}`;
+        sel.appendChild(o);
+      });
+      sel.value = currentStudent;
+      sel.addEventListener('change', async () => {
+        currentStudent = sel.value;
+        currentPacket = null;
+        $('result').classList.add('hidden');
+        $('genBtn').textContent = '▶ Adapt Lesson';
+        await loadProfile();
+        restoreCachedPacket();
+      });
+    }
+
+    // ===== LESSON =====
+    function renderLessonCard() {
+      const l = window.LESSONS.find(x => x.id === currentLesson);
+      if (!l) return;
+      const idx = window.LESSONS.findIndex(x => x.id === currentLesson);
+      
+      $('lessonCardTitle').textContent = l.title;
+      $('lessonCounter').textContent = `${idx + 1}/${window.LESSONS.length}`;
+      
+      const meta = $('lessonMeta');
+      meta.replaceChildren();
+      meta.append(
+        Object.assign(document.createElement('span'), { className: 'tag blue', textContent: l.subject }),
+        Object.assign(document.createElement('span'), { className: 'tag amber', textContent: `Grade ${l.grade}` }),
+        Object.assign(document.createElement('span'), { className: 'tag green', textContent: `${l.duration_min} min` }),
+        Object.assign(document.createElement('span'), { className: 'tag', textContent: l.standards[0] }),
+      );
+      
+      $('lessonPrev').disabled = idx === 0;
+      $('lessonNext').disabled = idx === window.LESSONS.length - 1;
+    }
+
+    function onLessonChange() {
+      loadedLessonId = null;
+      currentPacket = null;
+      $('result').classList.add('hidden');
+      $('genBtn').textContent = '▶ Adapt Lesson';
+      restoreCachedPacket();
+    }
+
+    function cycleLessonPrev() {
+      const idx = window.LESSONS.findIndex(x => x.id === currentLesson);
+      if (idx > 0) {
+        currentLesson = window.LESSONS[idx - 1].id;
+        renderLessonCard();
+        onLessonChange();
+      }
+    }
+
+    function cycleLessonNext() {
+      const idx = window.LESSONS.findIndex(x => x.id === currentLesson);
+      if (idx < window.LESSONS.length - 1) {
+        currentLesson = window.LESSONS[idx + 1].id;
+        renderLessonCard();
+        onLessonChange();
+      }
+    }
+
+    $('lessonPrev').addEventListener('click', cycleLessonPrev);
+    $('lessonNext').addEventListener('click', cycleLessonNext);
+
+    // ===== LESSON FORMATTER =====
+    function formatLesson(raw) {
+      const noiseRe = /^(Unit 1:|Unless otherwise noted|Riverstone|PREP|Public Charter|612 Millbrook|Phone:|School District|Name\s*$|Class\s*$)/i;
+      const lines = raw.split('\n').map(l => l.replace(/[\u200B\u00A0]/g, '').trimEnd());
+      const blocks = [];
+      let buf = [];
+      const flush = () => { const t = buf.join('\n').trim(); buf = []; if (t) blocks.push(t); };
+      
+      for (const line of lines) {
+        if (!line.trim()) { flush(); continue; }
+        if (noiseRe.test(line.trim())) continue;
+        buf.push(line);
+      }
+      flush();
+
+      const HEADERS = new Set([
+        'WHOLE CLASS READING', 'PARTNER READING', 'DURING READING QUESTIONS',
+        'Independent Practice', 'Student-Led Discussion', 'Suggested Pacing',
+        'About this Text', 'Purpose for Reading', 'Vocabulary',
+        'How does this lesson fit into the unit?',
+        'How do I facilitate this lesson?',
+        'Notes to Teachers',
+      ]);
+      
+      const root = document.createElement('div');
+      
+      blocks.forEach(block => {
+        const first = block.split('\n')[0].trim();
+        
+        if (HEADERS.has(first) || /^TEACHER COPY:/i.test(first)) {
+          const h = document.createElement('h4');
+          h.style.cssText = 'margin: 16px 0 8px; font-size: 0.8rem; text-transform: uppercase; color: var(--color-primary); font-weight: 700;';
+          h.textContent = first;
+          root.appendChild(h);
+          const rest = block.split('\n').slice(1).join('\n').trim();
+          if (rest) {
+            const p = document.createElement('p');
+            p.textContent = rest;
+            root.appendChild(p);
+          }
+          return;
+        }
+        
+        if (first === 'Vocabulary') {
+          const rest = block.split('\n').slice(1).join('\n').trim();
+          const div = document.createElement('div');
+          div.style.cssText = 'display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0;';
+          rest.split('\n').forEach(line => {
+            if (line.trim()) {
+              const span = document.createElement('span');
+              span.style.cssText = 'background: #eef2ff; color: #4338ca; padding: 4px 10px; border-radius: 6px; font-size: 0.84rem;';
+              span.textContent = line.trim();
+              div.appendChild(span);
+            }
+          });
+          root.appendChild(div);
+          return;
+        }
+        
+        const para = block.match(/^\[(\d+)\]\s*([\s\S]*)$/);
+        if (para) {
+          const div = document.createElement('div');
+          div.style.cssText = 'display: flex; gap: 12px; margin: 12px 0; align-items: flex-start;';
+          const num = document.createElement('span');
+          num.style.cssText = 'flex: 0 0 26px; height: 26px; background: var(--color-primary); color: white; border-radius: 5px; text-align: center; font-size: 0.75rem; font-weight: 700; line-height: 26px;';
+          num.textContent = para[1];
+          const body = document.createElement('p');
+          body.style.cssText = 'flex: 1; margin: 0;';
+          body.textContent = para[2];
+          div.append(num, body);
+          root.appendChild(div);
+          return;
+        }
+        
+        const p = document.createElement('p');
+        p.textContent = block;
+        root.appendChild(p);
+      });
+      
+      return root;
+    }
+
+    async function ensureLessonLoaded(force) {
+      if (loadedLessonId === currentLesson && !force) return;
+      const data = await fetchJSON(`/api/lesson?lesson_id=${encodeURIComponent(currentLesson)}`);
+      $('lessonBody').replaceChildren(formatLesson(data.text));
+      loadedLessonId = currentLesson;
+    }
+
+    $('lessonToggle').addEventListener('click', async () => {
+      const body = $('lessonBody');
+      const toggle = $('lessonToggle');
+      if (body.classList.contains('open')) {
+        body.classList.remove('open');
+        toggle.classList.remove('open');
+      } else {
+        try { await ensureLessonLoaded(); } catch (e) { alert('Error: ' + e.message); return; }
+        body.classList.add('open');
+        toggle.classList.add('open');
+      }
+    });
+
+    // ===== GENERATE =====
+    const candLabels = ['Draft #1', 'Draft #2', 'Draft #3', 'Draft #4'];
+    
+    function track(event, props) {
+      try { window.plausible && window.plausible(event, props ? { props } : undefined); } catch (e) {}
+    }
+
+    $('genBtn').addEventListener('click', () => {
+      const btn = $('genBtn');
+      btn.disabled = true;
+      $('progress').classList.remove('hidden');
+      $('result').classList.add('hidden');
+      $('cands').replaceChildren();
+      $('log').replaceChildren();
+      $('phase').textContent = 'Connecting…';
+      $('modelMeta').textContent = '';
+
+      track('Adapt Lesson', { student: currentStudent, lesson: currentLesson });
+      
+      const start = Date.now();
+      const elapsedTimer = setInterval(() => {
+        $('elapsed').textContent = Math.round((Date.now() - start) / 1000) + 's';
+      }, 1000);
+
+      const url = `/api/generate/stream?student_id=${encodeURIComponent(currentStudent)}&lesson_id=${encodeURIComponent(currentLesson)}`;
+      const es = new EventSource(url);
+      const cands = [];
+
+      function appendLog(msg) {
+        const line = document.createElement('div');
+        const ts = document.createElement('span');
+        ts.style.color = '#94a3b8';
+        ts.textContent = new Date().toLocaleTimeString('en-US', { hour12: false }) + ' ';
+        line.append(ts, msg);
+        $('log').appendChild(line);
+        $('log').scrollTop = $('log').scrollHeight;
+      }
+
+      function setCandState(idx, state, detail) {
+        let c = cands[idx];
+        if (!c) {
+          c = document.createElement('div');
+          c.className = 'cand';
+          c.innerHTML = `<div class="name">${candLabels[idx]}</div><div class="state">queued</div>`;
+          cands[idx] = c;
+          $('cands').appendChild(c);
+        }
+        c.className = 'cand ' + state;
+        c.querySelector('.state').textContent = detail || state;
+      }
+
+      function setPhaseStep(step) {
+        ['stepDraft', 'stepJudge', 'stepDone'].forEach((id, i) => {
+          const el = $(id);
+          if (!el) return;
+          const stepMap = { draft: 0, judge: 1, done: 2 };
+          const active = stepMap[step];
+          if (i < active) el.className = 'phase-step done';
+          else if (i === active) el.className = 'phase-step active';
+          else el.className = 'phase-step';
+        });
+      }
+
+      es.addEventListener('meta', (ev) => {
+        try {
+          const d = JSON.parse(ev.data);
+          $('modelMeta').textContent = `${d.provider} · ${d.model}`;
+          if ($('modelMeta2')) $('modelMeta2').textContent = `${d.provider} · ${d.model}`;
+          $('phase').textContent = 'Writing 4 drafts in parallel…';
+          setPhaseStep('draft');
+          appendLog(`Using ${d.provider} · ${d.model}`);
+        } catch {}
+      });
+
+      es.addEventListener('progress', (ev) => {
+        try {
+          const d = JSON.parse(ev.data);
+          if (d.kind === 'draft') { setCandState(d.candidate, 'draft', 'drafting'); appendLog(`Draft ${d.candidate + 1} started`); setPhaseStep('draft'); }
+          if (d.kind === 'critique') { setCandState(d.candidate, 'crit', 'critiquing'); appendLog(`Draft ${d.candidate + 1} critique`); }
+          if (d.kind === 'revision') { setCandState(d.candidate, 'revise', 'revising'); appendLog(`Draft ${d.candidate + 1} revision`); }
+          if (d.kind === 'candidate_final') { setCandState(d.candidate, 'done', 'done'); appendLog(`Draft ${d.candidate + 1} complete`); }
+          if (d.kind === 'judge') { $('phase').textContent = 'Judging best draft…'; setPhaseStep('judge'); appendLog('Judging…'); }
+        } catch {}
+      });
+
+      es.addEventListener('done', (ev) => {
+        try {
+          const d = JSON.parse(ev.data);
+          currentPacket = d.packet;
+          // Cache result keyed by student+lesson
+          try {
+            localStorage.setItem('waypoint_cache', JSON.stringify({
+              studentId: currentStudent,
+              lessonId: currentLesson,
+              packet: d.packet,
+              judgeReason: d.judgeReason || '',
+              winnerIndex: d.winnerIndex,
+              iterations: d.iterations,
+              ts: Date.now(),
+            }));
+          } catch {}
+          setCandState(d.winnerIndex, 'winner', '🏆 Winner');
+          $('phase').textContent = '✅ Packet ready';
+          $('progressSpinner').style.animation = 'none';
+          $('progressSpinner').style.borderTopColor = 'var(--color-success)';
+          $('progressSpinner').style.borderColor = 'var(--color-success)';
+          setPhaseStep('done');
+          appendLog(`Winner: Draft ${d.winnerIndex + 1} · ${d.iterations} iterations`);
+          track('Packet Ready', { student: currentStudent, lesson: currentLesson, winner: String(d.winnerIndex), elapsed_s: String(Math.round((Date.now() - start) / 1000)) });
+          $('judge').textContent = d.judgeReason || '';
+          $('packet').innerHTML = renderMarkdown(d.packet)
+            .replace(/\[\[NEW\]\]([\s\S]*?)\[\[\/NEW\]\]/g,         '<mark class="new">$1</mark>')
+            .replace(/\[\[CHANGED\]\]([\s\S]*?)\[\[\/CHANGED\]\]/g, '<mark class="changed">$1</mark>')
+            .replace(/\[\[SAME\]\]([\s\S]*?)\[\[\/SAME\]\]/g,       '<mark class="same">$1</mark>');
+          $('packet').classList.remove('collapsed');
+          $('collapseBtn').textContent = '▲ Collapse';
+          $('result').classList.remove('hidden');
+          clearInterval(elapsedTimer);
+          btn.disabled = false;
+          es.close();
+        } catch (e) {
+          $('phase').textContent = '❌ Error';
+          clearInterval(elapsedTimer);
+          btn.disabled = false;
+          es.close();
+        }
+      });
+
+      es.addEventListener('error', (ev) => {
+        $('phase').textContent = '❌ Connection error';
+        appendLog('Error: connection failed');
+        clearInterval(elapsedTimer);
+        btn.disabled = false;
+        es.close();
+      });
+    });
+
+    $('collapseBtn').addEventListener('click', () => {
+      const p = $('packet');
+      const btn = $('collapseBtn');
+      const collapsed = p.classList.toggle('collapsed');
+      btn.textContent = collapsed ? '▼ Expand' : '▲ Collapse';
+    });
+
+    $('dl').addEventListener('click', () => {
+      if (!currentPacket) return;
+      const blob = new Blob([currentPacket], { type: 'text/markdown' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'adapted_packet.md';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    // ===== UPLOAD =====
+    $('methodFile').addEventListener('change', () => {
+      $('fileInputSection').style.display = 'flex';
+      $('pasteInputSection').classList.add('hidden');
+    });
+    $('methodPaste').addEventListener('change', () => {
+      $('fileInputSection').style.display = 'none';
+      $('pasteInputSection').classList.remove('hidden');
+    });
+
+    $('uploadBtn').addEventListener('click', async () => {
+      const isPaste = $('methodPaste').checked;
+      const statusEl = $('uploadStatus');
+      const btn = $('uploadBtn');
+
+      if (isPaste) {
+        if (!$('txtPaste').value.trim()) { statusEl.textContent = '❌ Please paste lesson text'; statusEl.style.color = '#dc2626'; return; }
+        if (!$('lessonNameInput').value.trim()) { statusEl.textContent = '❌ Please enter lesson name'; statusEl.style.color = '#dc2626'; return; }
+      } else {
+        if (!$('txtInput').files?.[0]) { statusEl.textContent = '❌ Please select a file'; statusEl.style.color = '#dc2626'; return; }
+      }
+
+      btn.disabled = true;
+      statusEl.textContent = '⏳ Uploading…';
+      statusEl.style.color = 'var(--color-muted)';
+
+      try {
+        const formData = new FormData();
+        if (isPaste) {
+          formData.append('txtPaste', $('txtPaste').value);
+          formData.append('lessonName', $('lessonNameInput').value);
+        } else {
+          formData.append('txtFile', $('txtInput').files[0]);
+        }
+        if ($('jsonInput').files?.[0]) formData.append('jsonFile', $('jsonInput').files[0]);
+
+        const res = await fetch('/api/upload-lesson', { method: 'POST', body: formData });
+        const data = await res.json();
+
+        if (!res.ok) { statusEl.textContent = '❌ ' + (data.error || 'Upload failed'); statusEl.style.color = '#dc2626'; btn.disabled = false; return; }
+
+        statusEl.textContent = '✅ ' + data.message;
+        statusEl.style.color = 'var(--color-success)';
+        
+        const newLesson = { id: data.lessonId, title: data.message.match(/"([^"]+)"/)?.[1] || 'Uploaded Lesson', subject: 'Uploaded', grade: '7', duration_min: 45, standards: ['Custom'] };
+        window.LESSONS.push(newLesson);
+        currentLesson = data.lessonId;
+        renderLessonCard();
+        
+        $('txtInput').value = '';
+        $('jsonInput').value = '';
+        $('txtPaste').value = '';
+        btn.disabled = false;
+      } catch (e) {
+        statusEl.textContent = '❌ ' + (e.message || 'Upload failed');
+        statusEl.style.color = '#dc2626';
+        btn.disabled = false;
+      }
+    });
+
+    // ===== MARKDOWN RENDERER =====
+    function renderMarkdown(md) {
+      const lines = md.split('\n');
+      const out = [];
+      let i = 0;
+      const inline = (s) => s
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s.,;:!?)]|$)/g, '$1<em>$2</em>');
+      while (i < lines.length) {
+        const line = lines[i];
+        if (/^# /.test(line))    { out.push(`<h2>${inline(line.slice(2))}</h2>`); i++; continue; }
+        if (/^## /.test(line))   { out.push(`<h3>${inline(line.slice(3))}</h3>`); i++; continue; }
+        if (/^### /.test(line))  { out.push(`<h4>${inline(line.slice(4))}</h4>`); i++; continue; }
+        if (/^---+$/.test(line)) { out.push('<hr>'); i++; continue; }
+        if (/^\s*$/.test(line))  { i++; continue; }
+        if (/^\|.*\|$/.test(line) && /^\|[-: |]+\|$/.test(lines[i + 1] || '')) {
+          const headers = line.split('|').slice(1, -1).map(c => c.trim());
+          i += 2;
+          const rows = [];
+          while (i < lines.length && /^\|.*\|$/.test(lines[i])) { rows.push(lines[i].split('|').slice(1, -1).map(c => c.trim())); i++; }
+          out.push('<table><thead><tr>' + headers.map(h => `<th>${inline(h)}</th>`).join('') + '</tr></thead><tbody>' +
+            rows.map(r => '<tr>' + r.map(c => `<td>${inline(c)}</td>`).join('') + '</tr>').join('') + '</tbody></table>');
+          continue;
+        }
+        if (/^[-*]\s/.test(line) || /^\d+\.\s/.test(line)) {
+          const ordered = /^\d+\.\s/.test(line);
+          const items = [];
+          while (i < lines.length && (/^[-*]\s/.test(lines[i]) || /^\d+\.\s/.test(lines[i]))) { items.push(lines[i].replace(/^([-*]|\d+\.)\s/, '')); i++; }
+          const tag = ordered ? 'ol' : 'ul';
+          out.push(`<${tag}>` + items.map(x => `<li>${inline(x)}</li>`).join('') + `</${tag}>`);
+          continue;
+        }
+        const para = [];
+        while (i < lines.length && lines[i].trim() && !/^(#{1,3}\s|---+|[-*]\s|\d+\.\s|\|)/.test(lines[i])) { para.push(lines[i]); i++; }
+        out.push(`<p>${inline(para.join(' '))}</p>`);
+      }
+      return out.join('\n');
+    }
+
+    // ===== ACCORDION =====
+    function toggleAccordion(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+
+    function goToStep(n) {
+      const prev = document.getElementById('acc' + (n - 1));
+      const next = document.getElementById('acc' + n);
+      if (prev) { prev.classList.remove('open'); prev.classList.add('done'); }
+      if (next) {
+        next.classList.add('open');
+        setTimeout(() => next.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+      }
+      if (n === 2) {
+        const s = window.STUDENTS.find(x => x.id === currentStudent);
+        $('acc1summary').textContent = s ? s.name : '';
+      }
+      if (n === 3) {
+        const l = window.LESSONS.find(x => x.id === currentLesson);
+        $('acc2summary').textContent = l ? l.title : '';
+      }
+    }
+
+    // ===== CACHE =====
+    function restoreCachedPacket() {
+      try {
+        const raw = localStorage.getItem('waypoint_cache');
+        if (!raw) return;
+        const c = JSON.parse(raw);
+        if (c.studentId !== currentStudent || c.lessonId !== currentLesson) return;
+        currentPacket = c.packet;
+        $('judge').textContent = c.judgeReason
+          ? `Cached · ${c.judgeReason}`
+          : 'Restored from cache';
+        $('packet').innerHTML = renderMarkdown(c.packet)
+          .replace(/\[\[NEW\]\]([\s\S]*?)\[\[\/NEW\]\]/g,         '<mark class="new">$1</mark>')
+          .replace(/\[\[CHANGED\]\]([\s\S]*?)\[\[\/CHANGED\]\]/g, '<mark class="changed">$1</mark>')
+          .replace(/\[\[SAME\]\]([\s\S]*?)\[\[\/SAME\]\]/g,       '<mark class="same">$1</mark>');
+        $('packet').classList.remove('collapsed');
+        $('collapseBtn').textContent = '▲ Collapse';
+        $('result').classList.remove('hidden');
+        $('genBtn').textContent = '↺ Re-run';
+      } catch {}
+    }
+
+    // Clear cache when student or lesson changes
+    const _origLoadProfile = loadProfile;
+    async function loadProfileAndClearCache() {
+      currentPacket = null;
+      $('result').classList.add('hidden');
+      $('genBtn').textContent = '▶ Adapt Lesson';
+      await _origLoadProfile();
+      restoreCachedPacket();
+    }
+
+    // ===== INIT =====
+    async function initApp() {
+      renderStudentSelector();
+      renderLessonCard();
+      await loadProfile();
+      restoreCachedPacket();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        startHealthCheck();
+        initApp().catch(console.error);
+      });
+    } else {
+      startHealthCheck();
+      initApp().catch(console.error);
+    }
+  </script>
+</body>
+</html>
